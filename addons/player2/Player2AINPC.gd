@@ -1,46 +1,46 @@
 extends Node
 
-var player2_ai_nodes = {}
-var email_system
+signal chat_received(response: String)
+signal chat_response(response: String)
+
+var character_name: String = ""
+var character_description: String = ""
+var character_system_message: String = ""
+var config: Player2APIConfig
 
 func _ready():
-	email_system = get_parent().get_node("EmailSystem")
+	# Initialize Player2 configuration
+	config = Player2APIConfig.new()
+	# Use default endpoints from Player2APIConfig
 
-func create_ai_for_character(character_data: Dictionary) -> Node:
-	var Player2AINPC = load("res://addons/player2-ai-npc-godot/player2_ai_npc.gd")
-	if not Player2AINPC:
-		print("Player2 AI plugin not found!")
-		return null
-	
-	var ai_node = Player2AINPC.new()
-	if not ai_node:
-		print("Failed to create AI node!")
-		return null
-	
-	ai_node.character_name = character_data["name"]
-	ai_node.character_description = character_data["system_prompt"]
-	ai_node.character_system_message = character_data["system_prompt"] + "\n\nYou are " + character_data["name"] + ". You are emailing an insurance company about: " + character_data["first_prompt"] + "\n\nRespond naturally as this character would."
-	
-	ai_node.chat_received.connect(func(response: String): handle_ai_response(character_data["name"], response))
-	
-	add_child(ai_node)
-	player2_ai_nodes[character_data["name"]] = ai_node
-	
-	return ai_node
 
-func send_message_to_ai(character_name: String, message: String):
-	if player2_ai_nodes.has(character_name):
-		var ai_node = player2_ai_nodes[character_name]
-		if ai_node:
-			ai_node.chat(message)
+func chat(message: String):
+	var request = Player2Schema.ChatCompletionRequest.new()
+	request.messages = []
+	
+	var system_msg = Player2Schema.Message.new()
+	system_msg.role = "system"
+	system_msg.content = character_system_message
+	request.messages.append(system_msg)
+	
+	var context_msg = Player2Schema.Message.new()
+	context_msg.role = "user"
+	context_msg.content = "You are responding to an email from an insurance company customer service representative. The customer wrote: '" + message + "'\n\nPlease respond as " + character_name + " in email format, maintaining your unique personality and communication style."
+	request.messages.append(context_msg)
+	
+	Player2API.chat(config, request, 
+		Callable(self, "_on_chat_complete"), 
+		Callable(self, "_on_chat_error")
+	)
 
-func handle_ai_response(character_name: String, response: String):
-	if email_system:
-		email_system.receive_ai_response(character_name, response)
+func _on_chat_complete(response):
+	if response and response.has("choices") and response["choices"].size() > 0:
+		var ai_response = response["choices"][0]["message"]["content"]
+		chat_received.emit(ai_response)
+		chat_response.emit(ai_response)
+	else:
+		print("No valid response from AI")
+		print("Response: ", response)
 
-func remove_ai_for_character(character_name: String):
-	if player2_ai_nodes.has(character_name):
-		var ai_node = player2_ai_nodes[character_name]
-		player2_ai_nodes.erase(character_name)
-		if ai_node:
-			ai_node.queue_free() 
+func _on_chat_error(error_code):
+	print("Chat failed with error code: ", error_code)

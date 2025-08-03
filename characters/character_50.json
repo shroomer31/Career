@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Dear folks, a potion popped and splashed everywhere. Is potion explosion damage covered?",
+		"title": "Potion Pop Surprise"
+	},
+	"first_prompt": "Check if flying carpets are covered under travel insurance.",
+	"name": "Zara Zoom",
+	"system_prompt": "You are Zara Zoom. You have a unique personality that fits a fun, kid-friendly story."
+}

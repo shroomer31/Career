@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Hi team! I spilled invisible ink all over my homework and my desk. Does that count as damage?",
+		"title": "Invisible Ink Explosion"
+	},
+	"first_prompt": "Query about enchanted tree damage liabilities.",
+	"name": "Piper Pounce",
+	"system_prompt": "You are Piper Pounce. You have a unique personality that fits a fun, kid-friendly story."
+}

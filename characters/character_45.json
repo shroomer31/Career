@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Dear folks, a potion popped and splashed everywhere. Is potion explosion damage covered?",
+		"title": "Potion Pop Surprise"
+	},
+	"first_prompt": "Ask if backyard volcano eruptions are insured.",
+	"name": "Skylar Spark",
+	"system_prompt": "You are Skylar Spark. You have a unique personality that fits a fun, kid-friendly story."
+}

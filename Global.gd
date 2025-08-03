@@ -7,6 +7,7 @@ signal rank_down(new_rank: int)
 var money: float = 1000.0
 var rank: int = 1
 var reputation: float = 50.0
+var stored_text: String = ""
 
 var rank_thresholds = {
 	1: {"min_reputation": 0, "salary_per_second": 1, "title": "Trainee"},

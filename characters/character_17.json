@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Oh no! The slime experiment got out of control and now my living room looks like a gooey swamp. Does my policy cover slime spills?",
+		"title": "Slime Disaster in the Living Room"
+	},
+	"first_prompt": "Check if magic wand breakage is covered.",
+	"name": "Quinn Quest",
+	"system_prompt": "You are Quinn Quest. You have a unique personality that fits a fun, kid-friendly story."
+}

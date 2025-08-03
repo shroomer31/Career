@@ -28,48 +28,70 @@ func _process(delta):
 		create_new_email()
 
 func load_characters():
+	print("Loading characters from: ", characters_folder)
 	var dir = DirAccess.open(characters_folder)
 	if dir:
+		var file_count = 0
 		for file in dir.get_files():
 			if file.ends_with(".json"):
+				file_count += 1
 				var file_path = characters_folder + file
 				var file_content = FileAccess.get_file_as_string(file_path)
 				var character_data = JSON.parse_string(file_content)
 				if character_data:
+					print("Creating initial email for: ", character_data["name"])
 					create_email_from_character(character_data)
+				else:
+					print("Failed to parse character data from: ", file_path)
+		print("Found ", file_count, " character files")
+	else:
+		print("Failed to open characters directory: ", characters_folder)
 
 func create_email_from_character(character_data: Dictionary):
 	if not email_template:
+		print("Email template not found!")
 		return
 	var new_email_template = email_template.duplicate()
 	new_email_template.visible = true
-	add_child(new_email_template)
 	
-	var info_control = new_email_template.get_node("Control")
-	if info_control:
-		var name_label = info_control.get_node("Name")
-		var time_label = info_control.get_node("Time")
-		
-		if name_label:
-			name_label.text = character_data["name"]
-		if time_label:
-			var current_hour = int(Time.get_time_dict_from_system()["hour"])
-			var current_minute = int(Time.get_time_dict_from_system()["minute"])
-			time_label.text = str(current_hour) + ":" + str(current_minute).pad_zeros(2)
+	var vbox = get_node("screen/ScrollContainer/VBoxContainer")
+	if vbox:
+		vbox.add_child(new_email_template)
+		print("Added email to VBoxContainer for: ", character_data["name"])
+	else:
+		add_child(new_email_template)
+		print("Added email to root for: ", character_data["name"])
 	
-	var open_button = new_email_template.get_node("Open")
-	var delete_button = new_email_template.get_node("Delete")
+	var name_label = new_email_template.get_node("Control#Name")
+	var time_label = new_email_template.get_node("Control#Time")
+	
+	if name_label:
+		name_label.text = character_data["name"]
+	if time_label:
+		var current_hour = int(Time.get_time_dict_from_system()["hour"])
+		var current_minute = int(Time.get_time_dict_from_system()["minute"])
+		time_label.text = str(current_hour) + ":" + str(current_minute).pad_zeros(2)
+	
+	var open_button = new_email_template.get_node("Control#Open")
+	var delete_button = new_email_template.get_node("Control#Delete")
 	
 	if open_button:
-		open_button.pressed.connect(func(): open_email_page(character_data, new_email_template))
+		open_button.pressed.connect(Callable(self, "_on_open_email").bind(character_data, new_email_template))
 	if delete_button:
-		delete_button.pressed.connect(func(): delete_email(new_email_template))
+		delete_button.pressed.connect(Callable(self, "_on_delete_email").bind(new_email_template))
 	
 	email_templates.append(new_email_template)
 	
 	var page = create_page_template(character_data, new_email_template)
 	if page:
 		page_templates.append(page)
+	
+	# Display the first email from the character data
+	var content_label = new_email_template.get_node("Control#Content")
+	if content_label and character_data.has("first_email"):
+		var first_email = character_data["first_email"]
+		var email_text = first_email.get("title", "") + "\n\n" + first_email.get("body", "")
+		content_label.text = email_text
 	
 	if player2_integration:
 		player2_integration.create_ai_for_character(character_data)
@@ -92,13 +114,13 @@ func create_page_template(character_data: Dictionary, email_template_node) -> No
 		return null
 	
 	var title_label = vbox.get_node("Title")
-	var info_label = vbox.get_node("Info")
+	var body_label = vbox.get_node("Body")
 	var name_label = vbox.get_node("Name")
 	
 	if title_label:
 		title_label.text = character_data["first_prompt"]
-	if info_label:
-		info_label.text = character_data["system_prompt"]
+	if body_label:
+		body_label.text = character_data["system_prompt"]
 	if name_label:
 		name_label.text = character_data["name"]
 	
@@ -108,7 +130,7 @@ func create_page_template(character_data: Dictionary, email_template_node) -> No
 		var text_edit = respond_control.get_node("TextEdit")
 		
 		if send_button and text_edit:
-			send_button.pressed.connect(func(): send_response(character_data, text_edit.text, new_page, email_template_node))
+			send_button.pressed.connect(Callable(self, "_on_send_response").bind(character_data, text_edit, new_page, email_template_node))
 	
 	return new_page
 
@@ -117,27 +139,26 @@ func open_email_page(character_data: Dictionary, email_template_node):
 	
 	for page in page_templates:
 		var page_info = page.get_node("Info")
-		var page_vbox = page_info.get_node("ScrollContainer").get_node("VBoxContainer")
-		var page_name = page_vbox.get_node("Name")
-		
-		if page_name.text == character_data["name"]:
-			page.visible = true
-			break
+		if page_info:
+			var page_vbox = page_info.get_node("ScrollContainer/VBoxContainer")
+			if page_vbox:
+				var page_name = page_vbox.get_node("Name")
+				if page_name and page_name.text == character_data["name"]:
+					page.visible = true
+					break
 
 func delete_email(email_template_node):
 	var page_to_delete = null
 	var character_name = ""
 	
-	var info_control = email_template_node.get_node("Control")
-	if info_control:
-		var name_label = info_control.get_node("Name")
-		if name_label:
-			character_name = name_label.text
+	var name_label = email_template_node.get_node("Control#Name")
+	if name_label:
+		character_name = name_label.text
 	
 	for page in page_templates:
 		var page_info = page.get_node("Info")
 		if page_info:
-			var page_vbox = page_info.get_node("ScrollContainer").get_node("VBoxContainer")
+			var page_vbox = page_info.get_node("ScrollContainer/VBoxContainer")
 			if page_vbox:
 				var page_name = page_vbox.get_node("Name")
 				if page_name and page_name.text == character_name:
@@ -155,10 +176,10 @@ func delete_email(email_template_node):
 		player2_integration.remove_ai_for_character(character_name)
 
 func send_response(character_data: Dictionary, player_response: String, page_node, email_template_node):
-	var respond_control = page_node.get_node("Respond")
-	if not respond_control:
+	var info_control = page_node.get_node("Info")
+	if not info_control:
 		return
-	var vbox = respond_control.get_node("VBoxContainer")
+	var vbox = info_control.get_node("ScrollContainer/VBoxContainer")
 	if not vbox:
 		return
 	
@@ -177,18 +198,20 @@ func send_response(character_data: Dictionary, player_response: String, page_nod
 	}
 	
 	if player2_integration:
+		print("Sending message to AI for ", character_data["name"], ": ", player_response)
 		player2_integration.send_message_to_ai(character_data["name"], player_response)
 
 func receive_ai_response(character_name: String, ai_response: String):
+	print("AI Response from ", character_name, ": ", ai_response)
 	if pending_ai_responses.has(character_name):
 		var pending_data = pending_ai_responses[character_name]
 		var page_node = pending_data["page_node"]
 		var email_template_node = pending_data["email_template_node"]
 		var character_data = pending_data["character_data"]
 		
-		var respond_control = page_node.get_node("Respond")
-		if respond_control:
-			var vbox = respond_control.get_node("VBoxContainer")
+		var info_control = page_node.get_node("Info")
+		if info_control:
+			var vbox = info_control.get_node("ScrollContainer/VBoxContainer")
 			if vbox:
 				var ai_info_label = Label.new()
 				ai_info_label.text = character_data["name"]
@@ -210,11 +233,29 @@ func receive_ai_response(character_name: String, ai_response: String):
 func evaluate_response_quality(ai_response: String, character_data: Dictionary) -> float:
 	var quality = 0.5
 	
+	# Check for polite language
 	if "thank" in ai_response.to_lower():
-		quality += 0.2
+		quality += 0.15
 	if "appreciate" in ai_response.to_lower():
-		quality += 0.2
-	if "help" in ai_response.to_lower():
+		quality += 0.15
+	if "please" in ai_response.to_lower():
+		quality += 0.1
+	
+	# Check for professional tone
+	if "regards" in ai_response.to_lower() or "sincerely" in ai_response.to_lower():
+		quality += 0.1
+	
+	# Check for clear communication
+	if len(ai_response) > 50:
+		quality += 0.1
+	
+	# Check for character personality (for Aiden Patel - poetic language)
+	if character_data["name"] == "Aiden Patel":
+		if "metaphor" in ai_response.to_lower() or "poetry" in ai_response.to_lower() or "allegory" in ai_response.to_lower():
+			quality += 0.2
+	
+	# Check for email format
+	if "dear" in ai_response.to_lower() or "to whom it may concern" in ai_response.to_lower():
 		quality += 0.1
 	
 	return min(quality, 1.0)
@@ -253,4 +294,18 @@ func create_new_email():
 		var file_content = FileAccess.get_file_as_string(file_path)
 		var character_data = JSON.parse_string(file_content)
 		if character_data:
-			create_email_from_character(character_data) 
+			print("Creating email for character: ", character_data["name"])
+			create_email_from_character(character_data)
+		else:
+			print("Failed to parse character data from: ", file_path)
+	else:
+		print("No character files found in: ", characters_folder) 
+
+func _on_open_email(character_data: Dictionary, email_template_node):
+	open_email_page(character_data, email_template_node)
+
+func _on_delete_email(email_template_node):
+	delete_email(email_template_node)
+
+func _on_send_response(character_data: Dictionary, text_edit, new_page, email_template_node):
+	send_response(character_data, text_edit.text, new_page, email_template_node)

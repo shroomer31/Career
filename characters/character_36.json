@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Dear folks, a potion popped and splashed everywhere. Is potion explosion damage covered?",
+		"title": "Potion Pop Surprise"
+	},
+	"first_prompt": "Query about enchanted tree damage liabilities.",
+	"name": "Jade Jinx",
+	"system_prompt": "You are Jade Jinx. You have a unique personality that fits a fun, kid-friendly story."
+}

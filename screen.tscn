@@ -1,11 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://kxn0qmqyaosn"]
+[gd_scene load_steps=10 format=3 uid="uid://kxn0qmqyaosn"]
 
 [ext_resource type="Texture2D" uid="uid://cj78g3aab0lt0" path="res://yibay-7-31-2025.png" id="1_vouji"]
 [ext_resource type="Script" uid="uid://boro12sm6c2as" path="res://screen.gd" id="1_ym1bn"]
+[ext_resource type="Texture2D" uid="uid://br587hlvvsvn7" path="res://Model/asset3.png" id="2_61bok"]
 [ext_resource type="Texture2D" uid="uid://ccfgq4spkjnnj" path="res://Model/asset2.png" id="3_ym1bn"]
 [ext_resource type="Script" uid="uid://b86k41u8cevoy" path="res://node.gd" id="4_htcr4"]
 [ext_resource type="PackedScene" uid="uid://c0gf26mdlvg4r" path="res://PageTemplate.tscn" id="5_r5wmr"]
 [ext_resource type="PackedScene" uid="uid://bg53o3tkbhpk5" path="res://EmailTemplate.tscn" id="6_e1sjd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwxds"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.650128, 0.650128, 0.650128, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b4mvh"]
+bg_color = Color(0.86033, 0.0777789, 9.62615e-08, 1)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ym1bn")
@@ -55,7 +67,64 @@ texture = ExtResource("3_ym1bn")
 script = ExtResource("4_htcr4")
 
 [node name="PageTemplate" parent="." instance=ExtResource("5_r5wmr")]
-position = Vector2(-2205, 212)
+position = Vector2(-2294, -597)
 
 [node name="EmailTemplate" parent="." instance=ExtResource("6_e1sjd")]
-position = Vector2(-2346, 308)
+offset_left = 115.0
+offset_top = -191.0
+offset_right = 115.0
+offset_bottom = -191.0
+
+[node name="EmailTemplate2" type="Node2D" parent="."]
+position = Vector2(115, -191)
+
+[node name="Control" type="Control" parent="EmailTemplate2"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Open" type="Button" parent="EmailTemplate2/Control"]
+layout_mode = 0
+offset_right = 1834.0
+offset_bottom = 112.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_bwxds")
+
+[node name="Delete" type="Button" parent="EmailTemplate2/Control"]
+layout_mode = 0
+offset_left = 1665.0
+offset_top = 23.0
+offset_right = 1819.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_b4mvh")
+text = "DELETE"
+
+[node name="Name" type="Label" parent="EmailTemplate2/Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 184.0
+offset_top = 15.0
+offset_right = 516.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "SENDER"
+uppercase = true
+
+[node name="Time" type="Label" parent="EmailTemplate2/Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 1455.0
+offset_top = 8.0
+offset_right = 1649.0
+offset_bottom = 99.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "INFO"
+uppercase = true
+
+[node name="Asset3" type="Sprite2D" parent="EmailTemplate2/Control"]
+z_index = 4
+position = Vector2(96.5, 56)
+scale = Vector2(2.20988, 2.33333)
+texture = ExtResource("2_61bok")

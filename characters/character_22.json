@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Dear Insurance Team, I was skating super fast when I totally crashed my ramp! Do you cover this kind of epic disaster? Please let me know before I have to build another one!",
+		"title": "Help! My Skate Ramp Went Boom!"
+	},
+	"first_prompt": "Question about alien pet insurance coverage.",
+	"name": "Vince Vortex",
+	"system_prompt": "You are Vince Vortex. You have a unique personality that fits a fun, kid-friendly story."
+}

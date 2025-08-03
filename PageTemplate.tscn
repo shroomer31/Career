@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0gf26mdlvg4r"]
+[gd_scene load_steps=3 format=3 uid="uid://c0gf26mdlvg4r"]
 
 [ext_resource type="Texture2D" uid="uid://cg1pfq1f7skkt" path="res://Model/gmale.png" id="1_aoswo"]
+[ext_resource type="Script" uid="uid://bpu0qpr55s4j3" path="res://button.gd" id="2_44fyl"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -101,3 +102,14 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "LOL"
+
+[node name="Button4" type="Button" parent="."]
+modulate = Color(0.835294, 0, 0.0352941, 1)
+self_modulate = Color(1, 0.820527, 0.292299, 1)
+offset_left = 1663.0
+offset_top = 1.0
+offset_right = 1922.0
+offset_bottom = 146.0
+theme_override_font_sizes/font_size = 100
+text = "X"
+script = ExtResource("2_44fyl")

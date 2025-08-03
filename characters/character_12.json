@@ -1,0 +1,9 @@
+{
+	"first_email": {
+		"body": "Hello! An enchanted tree dropped magic nuts on my roof. Can you cover enchanted tree accidents?",
+		"title": "Enchanted Tree Accident Report"
+	},
+	"first_prompt": "Question about alien pet insurance coverage.",
+	"name": "Luna Loop",
+	"system_prompt": "You are Luna Loop. You have a unique personality that fits a fun, kid-friendly story."
+}

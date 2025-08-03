@@ -4,7 +4,7 @@ var player2_ai_nodes = {}
 var email_system
 
 func _ready():
-	email_system = get_parent().get_node("EmailSystem")
+	email_system = get_parent()
 
 func create_ai_for_character(character_data: Dictionary) -> Node:
 	var Player2AINPC = load("res://addons/player2/Player2AINPC.gd")
@@ -19,12 +19,14 @@ func create_ai_for_character(character_data: Dictionary) -> Node:
 	
 	ai_node.set("character_name", character_data["name"])
 	ai_node.set("character_description", character_data["system_prompt"])
-	ai_node.set("character_system_message", character_data["system_prompt"] + "\n\nYou are " + character_data["name"] + ". You are emailing an insurance company about: " + character_data["first_prompt"] + "\n\nRespond naturally as this character would.")
+	var system_message = "You are " + character_data["name"] + ". " + character_data["system_prompt"] + "\n\nYou are writing an email to an insurance company about: " + character_data["first_prompt"] + "\n\nWrite your response in email format, maintaining your unique personality and communication style. Be natural and authentic to your character."
+	ai_node.set("character_system_message", system_message)
+	print("Created AI node for ", character_data["name"], " with system message: ", system_message)
 	
 	if ai_node.has_signal("chat_received"):
-		ai_node.chat_received.connect(func(response: String): handle_ai_response(character_data["name"], response))
+		ai_node.chat_received.connect(Callable(self, "_on_ai_response").bind(character_data["name"]))
 	elif ai_node.has_signal("chat_response"):
-		ai_node.chat_response.connect(func(response: String): handle_ai_response(character_data["name"], response))
+		ai_node.chat_response.connect(Callable(self, "_on_ai_response").bind(character_data["name"]))
 	
 	add_child(ai_node)
 	player2_ai_nodes[character_data["name"]] = ai_node
@@ -47,3 +49,6 @@ func remove_ai_for_character(character_name: String):
 		player2_ai_nodes.erase(character_name)
 		if ai_node:
 			ai_node.queue_free() 
+
+func _on_ai_response(character_name: String, response: String):
+	handle_ai_response(character_name, response)
