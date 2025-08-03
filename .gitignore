@@ -1,0 +1,8 @@
+.godot/ 
+*.import 
+*.tmp 
+*.log 
+*.pck 
+*.exe 
+mono_crash.* 
+.DS_Store 

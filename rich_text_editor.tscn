@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0i7oc3cfb6b8"]
+
+[ext_resource type="Script" uid="uid://bifiib5fmsnud" path="res://addons/start_rich_text_editor/src/MultilineEditor.gd" id="1_2do15"]
+
+[node name="RichTextEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_2do15")
+metadata/_custom_type_script = "uid://bifiib5fmsnud"

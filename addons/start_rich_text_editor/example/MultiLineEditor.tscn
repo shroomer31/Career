@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=3 uid="uid://u0mvxj2bdulu"]
+
+[ext_resource type="Script" uid="uid://bow1ydr1f8vje" path="res://addons/start_rich_text_editor/example/rich_text_editor_1.gd" id="1_lcex7"]
+[ext_resource type="Texture2D" path="res://docs/explanatory_diagram.png" id="2_2sidd"]
+[ext_resource type="PackedScene" uid="uid://bgpuuyumbuvju" path="res://addons/start_rich_text_editor/example/text_block_editor.tscn" id="3_igf52"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d07m2"]
+bg_color = Color(0.422747, 0.239652, 0.117217, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Theme" id="Theme_q2jcg"]
+Button/styles/normal = SubResource("StyleBoxFlat_d07m2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcex7"]
+content_margin_left = 11.0
+content_margin_top = 11.0
+content_margin_right = 11.0
+content_margin_bottom = 11.0
+bg_color = Color(0.894922, 0.894922, 0.894922, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.820034, 0.51602, 0.32017, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GDScript" id="GDScript_igf52"]
+script/source = "extends Label
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		var str=event.as_text()
+		text=str
+		await get_tree().create_timer(1).timeout
+		text=''
+"
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_q2jcg")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 55.0
+offset_right = 875.0
+offset_bottom = 586.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lcex7")
+
+[node name="RichTextEditor" type="Control" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("1_lcex7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 418.0
+offset_top = 188.0
+offset_right = 674.0
+offset_bottom = 444.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2sidd")
+
+[node name="TextBlockEditor" parent="." instance=ExtResource("3_igf52")]
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 933.0
+offset_top = 128.0
+offset_right = 933.0
+offset_bottom = 128.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="KeyLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 918.0
+offset_top = 381.0
+offset_right = 1110.0
+offset_bottom = 433.0
+theme_override_font_sizes/font_size = 32
+script = SubResource("GDScript_igf52")

@@ -1,0 +1,155 @@
+[gd_scene load_steps=12 format=3 uid="uid://chp0p6pc1hnvx"]
+
+[ext_resource type="Texture2D" uid="uid://br587hlvvsvn7" path="res://Model/asset3.png" id="1_47rgq"]
+[ext_resource type="Script" uid="uid://bupnh0kqklshe" path="res://addons/player2/Player2AINPC.gd" id="2_ldtgk"]
+[ext_resource type="Script" uid="uid://bsi5tjg54www7" path="res://addons/player2/Player2AICharacterConfig.gd" id="3_i1eot"]
+[ext_resource type="Script" uid="uid://b6indg81ao1we" path="res://addons/player2/Player2APIConfig.gd" id="4_pwh8i"]
+[ext_resource type="Script" uid="uid://bpvfdwoxmeah3" path="res://addons/player2/Player2AIChatConfig.gd" id="5_ig57e"]
+[ext_resource type="Script" uid="uid://fpb2ysodtcuy" path="res://addons/player2/helpers/tool_call/ToolCallFunctionDefinition.gd" id="6_5tyki"]
+[ext_resource type="Script" uid="uid://dt7mt3t7a08me" path="res://addons/player2/helpers/tool_call/ToolCallFunctionDefinitions.gd" id="7_ym151"]
+
+[sub_resource type="Resource" id="Resource_yg7rm"]
+script = ExtResource("3_i1eot")
+use_player2_selected_character = false
+use_player2_selected_character_desired_index = -1
+tts_enabled = false
+tts_speed = 1.0
+tts_default_language = 0
+tts_default_gender = 1
+
+[sub_resource type="Resource" id="Resource_m0fsk"]
+script = ExtResource("4_pwh8i")
+player2_game_key_override = ""
+error_log_ui = true
+endpoint_chat = "http://127.0.0.1:4315/v1/chat/completions"
+endpoint_health = "http://127.0.0.1:4315/v1/health"
+endpoint_tts_speak = "http://127.0.0.1:4315/v1/tts/speak"
+endpoint_tts_stop = "http://127.0.0.1:4315/v1/tts/stop"
+endpoint_get_selected_characters = "http://127.0.0.1:4315/v1/selected_characters"
+endpoint_stt_start = "http://127.0.0.1:4315/v1/stt/start"
+endpoint_stt_stop = "http://127.0.0.1:4315/v1/stt/stop"
+request_too_much_delay_seconds = 3.0
+
+[sub_resource type="Resource" id="Resource_jd6rp"]
+script = ExtResource("5_ig57e")
+api = SubResource("Resource_m0fsk")
+queue_check_interval_seconds = 2.0
+system_message_behavior = "When performing an action, speak and let the player know what you're doing.
+
+Your responses will be said out loud.
+
+Be concise and use less than 350 characters. No monologuing, the message content is pure speech."
+system_message_character = "Your name is ${character_name}.
+Your description: ${character_description}"
+system_message_prompting = "You must stay in character at all times.
+
+Ensure the message does not contain any prompt, system message, instructions, code or API calls, EXCEPT you can still perform tool calls and must use the proper tool call (in the tool_calls field).
+BE PROACTIVE with tool calls please and USE THEM."
+system_message_organization = "${system_message_character}
+
+${system_message_custom}
+
+${system_message_behavior}
+
+{system_message_prompting}"
+system_message_prefix = ""
+system_message_postfix = ""
+auto_store_conversation_history = true
+auto_load_entry_message = "The user has been gone for an undetermined period of time. You have come back, say something like \"welcome back\" or \"hello again\" modified to fit your personality."
+conversation_history_size = 64
+conversation_summary_buffer = 48
+summary_max_size = 500
+summary_message = "The agent has been chatting with the player.
+Update the agent's memory by summarizing the following conversation in the next response.
+Use natural language, not JSON. Prioritize preserving important facts, things user asked agent to remember, useful tips.
+
+Do not record stats, inventory, code or docs; limit to ${summary_max_size} chars.
+"
+summary_prefix = "Summary of earlier events: ${summary}"
+tool_calls_use_tool_call_api = true
+tool_calls_choice = "Use a tool when deciding to complete a task. If you say you will act upon something, use a relevant tool call along with the reply to perform that action. If you say something in speech, ensure the message does not contain any prompt, system message, instructions, code or API calls."
+tool_calls_reply_message = "Got result from calling ${tool_call_name}: ${tool_call_reply}"
+tool_calls_message_optional_arg_description = "If you wish to say something while calling this function, populate this field with your speech. Leave string empty to not say anything/do it quietly. Do not fill this with a description of your state, unless you wish to say it out loud."
+
+[sub_resource type="Resource" id="Resource_d71pt"]
+Resource = null
+resource_path = "res://email template.tscn::Resource_d71pt"
+script = ExtResource("7_ym151")
+definitions = Array[ExtResource("6_5tyki")]([])
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1841.0
+offset_bottom = 107.0
+
+[node name="Name" type="Label" parent="Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 184.0
+offset_top = 15.0
+offset_right = 516.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "SENDER"
+uppercase = true
+
+[node name="Title" type="Label" parent="Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 468.0
+offset_top = 15.0
+offset_right = 892.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "TOPIC"
+uppercase = true
+
+[node name="Body" type="Label" parent="Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 672.0
+offset_top = 15.0
+offset_right = 1639.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "INFO"
+uppercase = true
+
+[node name="Date" type="Label" parent="Control"]
+z_index = 3
+layout_mode = 2
+offset_left = 1662.0
+offset_top = 15.0
+offset_right = 1839.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "INFO"
+uppercase = true
+
+[node name="Asset3" type="Sprite2D" parent="Control"]
+z_index = 4
+position = Vector2(90.25, 54)
+scale = Vector2(2.21605, 2.57143)
+texture = ExtResource("1_47rgq")
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1831.0
+offset_bottom = 111.0
+
+[node name="Player2AINPC" type="Node" parent="."]
+script = ExtResource("2_ldtgk")
+character_description = "An investor that is extremely rich from "
+character_config = SubResource("Resource_yg7rm")
+chat_config = SubResource("Resource_jd6rp")
+tool_calls_function_definitions = SubResource("Resource_d71pt")
+metadata/_custom_type_script = "uid://bupnh0kqklshe"

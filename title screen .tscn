@@ -1,0 +1,106 @@
+[gd_scene load_steps=6 format=3 uid="uid://hc22hhubba06"]
+
+[ext_resource type="Script" uid="uid://cowbijqys4c2" path="res://color_rect.gd" id="1_8culh"]
+[ext_resource type="Script" uid="uid://24m328yr2l6y" path="res://control.gd" id="1_id4fo"]
+[ext_resource type="Script" uid="uid://byi43f1cvmkho" path="res://label.gd" id="2_3fa56"]
+[ext_resource type="Texture2D" uid="uid://bnotwe5oa6q1s" path="res://01- OFFICE.WORK.DESK.LOWPOLY.BUREAU.GAME.ASSETS/ladder.png" id="3_17uqq"]
+[ext_resource type="Script" uid="uid://bgia5f8v57r0g" path="res://sprite_2d.gd" id="4_83j2n"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_id4fo")
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1944.0
+offset_bottom = 1099.0
+script = ExtResource("1_8culh")
+
+[node name="Label5" type="Label" parent="Control"]
+modulate = Color(0.629675, 0.629675, 0.629675, 1)
+z_index = 5
+layout_mode = 0
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 1870.0
+offset_bottom = 181.0
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.990516, 0.942265, 1, 1)
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 34
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 120
+text = "THE INSURANCE BANDIT"
+horizontal_alignment = 1
+script = ExtResource("2_3fa56")
+
+[node name="Sprite2D" type="Sprite2D" parent="Control"]
+position = Vector2(107, 548)
+scale = Vector2(0.229849, 0.366952)
+texture = ExtResource("3_17uqq")
+script = ExtResource("4_83j2n")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Control"]
+position = Vector2(1839, 548)
+scale = Vector2(0.229849, 0.366952)
+texture = ExtResource("3_17uqq")
+script = ExtResource("4_83j2n")
+
+[node name="Label2" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 483.0
+offset_top = 245.0
+offset_right = 1428.0
+offset_bottom = 378.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "You work for an insurance company and are trying to make your way up to the CEO position. "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label3" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 478.0
+offset_top = 387.0
+offset_right = 1423.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Talk with customers to boost the sales of your company"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label4" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 528.0
+offset_right = 1425.0
+offset_bottom = 661.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Every so often, your boss will call in to check on you. Can you convince him to promote you?"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_left = 438.0
+offset_top = 195.0
+offset_right = 1451.0
+offset_bottom = 738.0
+
+[node name="Button" type="Button" parent="Control"]
+modulate = Color(0, 0.719241, 0.278446, 1)
+self_modulate = Color(0.288343, 1, 0.352298, 1)
+layout_mode = 0
+offset_left = 751.0
+offset_top = 856.0
+offset_right = 1156.0
+offset_bottom = 1001.0
+theme_override_font_sizes/font_size = 100
+text = "GO"

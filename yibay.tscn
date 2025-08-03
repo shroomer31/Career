@@ -1,0 +1,122 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjips0mrtqt8"]
+
+[ext_resource type="Texture2D" uid="uid://png1lov27b17" path="res://watch.jpg" id="1_17rhk"]
+[ext_resource type="Texture2D" uid="uid://dqdxbq0uuc63t" path="res://island.webp" id="2_08dd1"]
+[ext_resource type="Texture2D" uid="uid://y00fe62ttduw" path="res://jwt.webp" id="3_rr1qp"]
+[ext_resource type="Script" uid="uid://bpu0qpr55s4j3" path="res://button.gd" id="4_dpr7k"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1915.0
+offset_bottom = 1083.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1923.0
+offset_bottom = 1073.0
+
+[node name="Watch" type="Sprite2D" parent="Control"]
+position = Vector2(237, 196)
+scale = Vector2(0.18825, 0.215505)
+texture = ExtResource("1_17rhk")
+
+[node name="Island" type="Sprite2D" parent="Control"]
+position = Vector2(194, 870)
+scale = Vector2(2.35843, 1.94722)
+texture = ExtResource("2_08dd1")
+
+[node name="Jwt" type="Sprite2D" parent="Control"]
+position = Vector2(209, 513)
+scale = Vector2(0.897679, 0.888535)
+texture = ExtResource("3_rr1qp")
+
+[node name="Button" type="Button" parent="Control"]
+modulate = Color(0, 0.719241, 0.278446, 1)
+self_modulate = Color(0.288343, 1, 0.352298, 1)
+layout_mode = 0
+offset_left = 1168.0
+offset_top = 106.0
+offset_right = 1573.0
+offset_bottom = 251.0
+theme_override_font_sizes/font_size = 100
+text = "BUY"
+script = ExtResource("4_dpr7k")
+
+[node name="Button2" type="Button" parent="Control"]
+modulate = Color(0, 0.719241, 0.278446, 1)
+self_modulate = Color(0.288343, 1, 0.352298, 1)
+layout_mode = 0
+offset_left = 1174.0
+offset_top = 454.0
+offset_right = 1579.0
+offset_bottom = 599.0
+theme_override_font_sizes/font_size = 100
+text = "BUY"
+script = ExtResource("4_dpr7k")
+
+[node name="Button3" type="Button" parent="Control"]
+modulate = Color(0, 0.719241, 0.278446, 1)
+self_modulate = Color(0.288343, 1, 0.352298, 1)
+layout_mode = 0
+offset_left = 1174.0
+offset_top = 796.0
+offset_right = 1579.0
+offset_bottom = 941.0
+theme_override_font_sizes/font_size = 100
+text = "BUY"
+script = ExtResource("4_dpr7k")
+
+[node name="Button4" type="Button" parent="Control"]
+modulate = Color(0.835294, 0, 0.0352941, 1)
+self_modulate = Color(1, 0.820527, 0.292299, 1)
+layout_mode = 0
+offset_left = 1669.0
+offset_top = -9.0
+offset_right = 1928.0
+offset_bottom = 136.0
+theme_override_font_sizes/font_size = 100
+text = "X"
+script = ExtResource("4_dpr7k")
+
+[node name="Label" type="Label" parent="Control"]
+modulate = Color(0.976471, 1, 0, 1)
+layout_mode = 0
+offset_left = 482.0
+offset_top = 126.0
+offset_right = 890.0
+offset_bottom = 255.0
+theme_override_font_sizes/font_size = 100
+text = "$1,000"
+
+[node name="Label2" type="Label" parent="Control"]
+modulate = Color(0.976471, 1, 0, 1)
+layout_mode = 0
+offset_left = 468.0
+offset_top = 457.0
+offset_right = 876.0
+offset_bottom = 594.0
+theme_override_font_sizes/font_size = 100
+text = "$50,000"
+
+[node name="Label3" type="Label" parent="Control"]
+modulate = Color(0.976471, 1, 0, 1)
+layout_mode = 0
+offset_left = 454.0
+offset_top = 822.0
+offset_right = 862.0
+offset_bottom = 959.0
+theme_override_font_sizes/font_size = 100
+text = "$100,000,000"
+
+[node name="Label4" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 628.0
+offset_top = 985.0
+offset_right = 1889.0
+offset_bottom = 1068.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "BUY GOODS SO PEOPLE WILL RESPECT YOU!"

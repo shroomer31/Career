@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://kxn0qmqyaosn"]
+
+[ext_resource type="Texture2D" uid="uid://cj78g3aab0lt0" path="res://yibay-7-31-2025.png" id="1_vouji"]
+[ext_resource type="Script" uid="uid://boro12sm6c2as" path="res://screen.gd" id="1_ym1bn"]
+[ext_resource type="Texture2D" uid="uid://ccfgq4spkjnnj" path="res://Model/asset2.png" id="3_ym1bn"]
+[ext_resource type="Script" uid="uid://b86k41u8cevoy" path="res://node.gd" id="4_htcr4"]
+[ext_resource type="PackedScene" uid="uid://c0gf26mdlvg4r" path="res://PageTemplate.tscn" id="5_r5wmr"]
+[ext_resource type="PackedScene" uid="uid://bg53o3tkbhpk5" path="res://EmailTemplate.tscn" id="6_e1sjd"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ym1bn")
+
+[node name="screen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1917.0
+offset_bottom = 1087.0
+
+[node name="ColorRect" type="ColorRect" parent="screen"]
+layout_mode = 0
+offset_right = 1917.0
+offset_bottom = 1087.0
+
+[node name="Yibay-7-31-2025" type="Sprite2D" parent="screen"]
+position = Vector2(1744, 1000)
+scale = Vector2(0.34375, 0.328685)
+texture = ExtResource("1_vouji")
+
+[node name="Button" type="Button" parent="screen"]
+modulate = Color(1, 1, 1, 0.32549)
+layout_mode = 0
+offset_left = 1568.0
+offset_top = 917.0
+offset_right = 1921.0
+offset_bottom = 1085.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="screen"]
+layout_mode = 0
+offset_left = 376.0
+offset_right = 1913.0
+offset_bottom = 1082.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="screen/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 110
+alignment = 2
+
+[node name="Asset2" type="Sprite2D" parent="."]
+position = Vector2(194, 542)
+scale = Vector2(1.19, 1.19)
+texture = ExtResource("3_ym1bn")
+
+[node name="Player2Integration" type="Node" parent="."]
+script = ExtResource("4_htcr4")
+
+[node name="PageTemplate" parent="." instance=ExtResource("5_r5wmr")]
+position = Vector2(-2205, 212)
+
+[node name="EmailTemplate" parent="." instance=ExtResource("6_e1sjd")]
+position = Vector2(-2346, 308)
