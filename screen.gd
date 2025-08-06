@@ -13,6 +13,7 @@ var pending_ai_responses = {}
 @onready var page_template = $PageTemplate
 @onready var email_template = $EmailTemplate
 @onready var player2_integration = $Player2Integration
+@onready var ceo_call_system = $CEOCallSystem
 
 func _ready():
 	if page_template:
@@ -20,6 +21,14 @@ func _ready():
 	if email_template:
 		email_template.visible = false
 	load_characters()
+	
+	# Connect CEO call system signals
+	if Global:
+		Global.connect("ceo_call_window_opened", Callable(self, "_on_ceo_call_window_opened"))
+		Global.connect("ceo_call_window_closed", Callable(self, "_on_ceo_call_window_closed"))
+	
+	if ceo_call_system:
+		ceo_call_system.connect("player_promoted", Callable(self, "_on_player_promoted"))
 
 func _process(delta):
 	current_time += delta
@@ -309,3 +318,24 @@ func _on_delete_email(email_template_node):
 
 func _on_send_response(character_data: Dictionary, text_edit, new_page, email_template_node):
 	send_response(character_data, text_edit.text, new_page, email_template_node)
+
+func _input(event):
+	# Handle E key press during CEO call window
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_E and Global.is_ceo_call_window_active():
+			if Global.join_ceo_call():
+				print("Successfully joined CEO call!")
+				if ceo_call_system:
+					ceo_call_system.start_ceo_call_interface()
+
+func _on_ceo_call_window_opened():
+	print("🔔 CEO CALL INCOMING! Press E to join within 30 seconds!")
+	# TODO: Show visual/audio notification in UI
+
+func _on_ceo_call_window_closed():
+	print("⏰ CEO call window expired. Call missed.")
+	# TODO: Hide notification in UI
+
+func _on_player_promoted(new_rank: int):
+	print("🎉 PROMOTION NOTIFICATION: You've been promoted to rank ", new_rank, " (", Global.get_rank_title(), ")!")
+	# TODO: Show promotion celebration UI
