@@ -3,11 +3,24 @@ extends Node
 signal stats_changed(stat_name: String, old_value: float, new_value: float)
 signal rank_up(new_rank: int)
 signal rank_down(new_rank: int)
+signal ceo_call_started()
+signal ceo_call_window_opened()
+signal ceo_call_window_closed()
+signal ceo_call_joined()
+signal ceo_call_ended()
 
 var money: float = 1000.0
 var rank: int = 1
 var reputation: float = 50.0
 var stored_text: String = ""
+
+# CEO Call System
+var ceo_call_timer: float = 0.0
+var ceo_call_interval: float = 600.0  # 10 minutes
+var ceo_call_window_duration: float = 30.0  # 30 seconds
+var ceo_call_window_active: bool = false
+var ceo_call_in_progress: bool = false
+var ceo_call_window_timer: float = 0.0
 
 var rank_thresholds = {
 	1: {"min_reputation": 0, "salary_per_second": 1, "title": "Trainee"},
@@ -27,6 +40,9 @@ func _ready():
 func _process(delta):
 	var salary = get_rank_salary_per_second()
 	add_money(salary * delta)
+	
+	# Handle CEO call system
+	handle_ceo_call_system(delta)
 
 func add_money(amount: float) -> bool:
 	if amount <= 0:
@@ -190,4 +206,62 @@ func process_email_failure(severity: float):
 		"reputation_lost": reputation_loss,
 		"money_lost": money_loss,
 		"severity": severity
-	} 
+	}
+
+# CEO Call System Methods
+func handle_ceo_call_system(delta: float):
+	if ceo_call_in_progress:
+		return
+	
+	if ceo_call_window_active:
+		ceo_call_window_timer += delta
+		if ceo_call_window_timer >= ceo_call_window_duration:
+			close_ceo_call_window()
+	else:
+		ceo_call_timer += delta
+		if ceo_call_timer >= ceo_call_interval:
+			trigger_ceo_call()
+
+func trigger_ceo_call():
+	print("CEO is calling! Press E within 30 seconds to join the call.")
+	ceo_call_window_active = true
+	ceo_call_window_timer = 0.0
+	emit_signal("ceo_call_window_opened")
+
+func close_ceo_call_window():
+	print("CEO call window expired.")
+	ceo_call_window_active = false
+	ceo_call_timer = 0.0
+	emit_signal("ceo_call_window_closed")
+
+func join_ceo_call() -> bool:
+	if not ceo_call_window_active or ceo_call_in_progress:
+		return false
+	
+	print("Joining CEO call...")
+	ceo_call_window_active = false
+	ceo_call_in_progress = true
+	emit_signal("ceo_call_joined")
+	return true
+
+func end_ceo_call():
+	print("CEO call ended.")
+	ceo_call_in_progress = false
+	ceo_call_timer = 0.0
+	emit_signal("ceo_call_ended")
+
+func is_ceo_call_window_active() -> bool:
+	return ceo_call_window_active
+
+func is_ceo_call_in_progress() -> bool:
+	return ceo_call_in_progress
+
+func get_ceo_call_window_time_left() -> float:
+	if not ceo_call_window_active:
+		return 0.0
+	return max(0.0, ceo_call_window_duration - ceo_call_window_timer)
+
+func get_time_until_next_ceo_call() -> float:
+	if ceo_call_window_active or ceo_call_in_progress:
+		return 0.0
+	return max(0.0, ceo_call_interval - ceo_call_timer) 

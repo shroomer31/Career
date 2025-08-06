@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://kxn0qmqyaosn"]
+[gd_scene load_steps=11 format=3 uid="uid://kxn0qmqyaosn"]
 
 [ext_resource type="Texture2D" uid="uid://cj78g3aab0lt0" path="res://yibay-7-31-2025.png" id="1_vouji"]
 [ext_resource type="Script" uid="uid://boro12sm6c2as" path="res://screen.gd" id="1_ym1bn"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b86k41u8cevoy" path="res://node.gd" id="4_htcr4"]
 [ext_resource type="PackedScene" uid="uid://c0gf26mdlvg4r" path="res://PageTemplate.tscn" id="5_r5wmr"]
 [ext_resource type="PackedScene" uid="uid://bg53o3tkbhpk5" path="res://EmailTemplate.tscn" id="6_e1sjd"]
+[ext_resource type="Script" path="res://ceo_call_system.gd" id="7_ceo_call"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwxds"]
 bg_color = Color(1, 1, 1, 1)
@@ -65,6 +66,9 @@ texture = ExtResource("3_ym1bn")
 
 [node name="Player2Integration" type="Node" parent="."]
 script = ExtResource("4_htcr4")
+
+[node name="CEOCallSystem" type="Node" parent="."]
+script = ExtResource("7_ceo_call")
 
 [node name="PageTemplate" parent="." instance=ExtResource("5_r5wmr")]
 position = Vector2(-2294, -597)
